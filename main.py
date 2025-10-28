@@ -21,6 +21,7 @@ dt = [
     ["Natalia Runtu", "Wanita", 19, "Minahasa", "ENFJ", "UNPAD", "Hukum", "Siap jadi pendamping hidup","NataliaR19","Kristen"],
     ["Farhan Alatas", "Pria", 21, "Arab", "ENTP", "UNPAR", "Bisnis", "Bisnis bareng yuk","FarhanA21","Islam"],
     ["Layla Zahra", "Wanita", 20, "Arab", "ISFJ", "ITB", "Teknik", "Life is a highway!", "LaylaZ_20","Islam"],
+    ["Mingse Aming", "Pria", 18, "Tionghoa","ENTP","ITB","Teknik","Cuman jam tidur doang yang rusak, bukan jam terbang", "amingse_07","Hindu"]
 ]
 
 ras = [p[3] for p in dt] # Ekstrak semau nilai 'ras' dari list dt asli
@@ -168,7 +169,7 @@ while yakin == 0:
     print("===================================================================================")
     agama_inp = 0
     while agama_inp == 0: # Loop sampai input agama valid
-        a_m = str(input(f"Agama dari pasangan yang Anda cari?\n- Katolik     - Kristen\n- Islam       - Konghucu\n- Buddha\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)\nJawaban    : "))
+        a_m = str(input(f"Agama dari pasangan yang Anda cari?\n- Katolik     - Kristen\n- Islam       - Konghucu\n- Buddha      - Hindu\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)\nJawaban    : "))
         r[10] = [x.strip().capitalize() for x in a_m.split(",")]
         pl_agama = ""
         llm_agama = list(set(r[10]) - set(agama_list))
@@ -226,7 +227,7 @@ while yakin == 0:
     valid_fakultas_pref = ["Teknik", "Sosial", "Seni", "Sastra", "Bisnis", "Kesehatan", "Hukum", "Farmasi", "Sains"] 
     r[8] = 0 # Reset input preferensi fakultas
     while r[8] == 0 or not all(fak in valid_fakultas_pref for fak in r[8]):
-        f_m = input("Fakultas dari pasangan yang Anda cari?\n- Teknik       - Sosial\n- Seni          - Sastra\n- Bisnis       - Kesehatan\n- Hukum        - Farmasi\n- Sains\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)\nJawaban    : ")
+        f_m = input("Fakultas dari pasangan yang Anda cari?\n- Teknik       - Sosial\n- Seni         - Sastra\n- Bisnis       - Kesehatan\n- Hukum        - Farmasi\n- Sains\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)\nJawaban    : ")
         r[8] = [x.strip().capitalize() for x in f_m.split(",")]
         if not r[8] or not all(fak in valid_fakultas_pref for fak in r[8]): # Cek apakah list kosong atau ada invalid preferensi fakultas
             print("Input tidak valid. Mohon masukkan salah satu dari daftar fakultas.")
@@ -234,7 +235,7 @@ while yakin == 0:
 
 
     print("\n>>>>>>>>>>>>>>>>>>>> Rangkuman Data Preferensi calon pasangan Anda <<<<<<<<<<<<<<<<<<<<\n")
-    print(f"Kriteria calon pasangan yang Anda cari\n  - Range usia    : {r[1]} - {r[2]} tahun\n  - Ras           : {r_m}\n  - Agama         : {a_m}\n  - MBTI           : {p_m}\n  - Kampus       : {u_m}\n  - Fakultas     : {f_m}")
+    print(f"Kriteria calon pasangan yang Anda cari\n  - Range usia   : {r[1]} - {r[2]} tahun\n  - Ras          : {r_m}\n  - Agama        : {a_m}\n  - MBTI         : {p_m}\n  - Kampus       : {u_m}\n  - Fakultas     : {f_m}")
     yakin_valid_input = False
     while yakin_valid_input == False:
         yakin_input = input("Apakah Anda sudah yakin dengan data tersebut? (Y/N): ")
