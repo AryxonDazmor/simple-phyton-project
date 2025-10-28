@@ -21,10 +21,9 @@ dt = [
     ["Natalia Runtu", "Wanita", 19, "Minahasa", "ENFJ", "UNPAD", "Hukum", "Siap jadi pendamping hidup","NataliaR19","Kristen"],
     ["Farhan Alatas", "Pria", 21, "Arab", "ENTP", "UNPAR", "Bisnis", "Bisnis bareng yuk","FarhanA21","Islam"],
     ["Layla Zahra", "Wanita", 20, "Arab", "ISFJ", "ITB", "Teknik", "Life is a highway!", "LaylaZ_20","Islam"],
-    ["Sanjaya", "Wanita", 19,"Bali","ESFP","ITB","Seni","Semangat hidup","Sanjaya12345","Hindu"]
 ]
 
-ras = list(set(p[3] for p in dt)) # Ekstrak semau nilai 'ras' dari list dt asli
+ras = [p[3] for p in dt] # Ekstrak semau nilai 'ras' dari list dt asli
 agama_list = list(set([p[9] for p in dt])) # Ekstrak semua nilai unik 'agama'
 mbti_list = list(set([p[4] for p in dt])) # Ekstrak semua nilai unik 'MBTI'
 
@@ -32,7 +31,7 @@ pu = [["User1","Admin123456"],["User2","Admin1001"],["User3","Password123"]] #Da
 a = [0,0]
 logged_in = False
 while logged_in == False:
-    print("Halo, Selamat datang di Program Dating Kampus 2025!")
+    print("Halo Pencari Jodoh, Selamat datang di Program Dating Kampus 2025!\n")
     have_account = (input("Apakah Anda memiliki akun? (Y/N): "))
     if have_account.upper() == "N":
         c = [0,0]
@@ -81,13 +80,13 @@ r = [0 for p in range (11)] #Menyimpan data yang nantinya diinput oleh user meng
 yakin = 0
 while yakin == 0:
     print("")
-    print("===================================================================================\n                   Isilah Profil dan preferensimu!\n===================================================================================")
+    print("======================================================================\n                   Silakan isi profil diri Anda!\n======================================================================")
     while r[6] == 0:
         r[6] = str(input("Nama Lengkap: "))
 
     valid_fakultas = ["Teknik", "Sosial", "Seni", "Sastra", "Bisnis", "Kesehatan", "Hukum", "Sains"]
     while r[9] == 0 or r[9].capitalize() not in valid_fakultas:
-        r[9] = str(input("Asal Fakultas kamu dari mana?\n- Teknik       - Bisnis\n- Sosial       - Kesehatan\n- Seni         - Hukum\n- Sastra       - Sains\nJawabanmu : ")).capitalize()
+        r[9] = str(input("Asal Fakultas Anda dari mana?\n- Teknik       - Bisnis\n- Sosial       - Kesehatan\n- Seni         - Hukum\n- Sastra       - Sains\nJawaban     : ")).capitalize()
         if r[9] not in valid_fakultas:
             print("Input tidak valid. Mohon masukkan salah satu dari daftar fakultas.")
             r[9] = 0 # Reset r[9] untuk tetap berada di loop
@@ -95,9 +94,9 @@ while yakin == 0:
     r[7] = 0 # Reset input usia sebelum loop
     while r[7] < 18:
         try:
-            r[7] = int(input("Usia      : "))
+            r[7] = int(input("Usia (tahun): "))
             if r[7] < 18:
-                print("Maaf, anda masih dibawah umur. Silahkan masukkan usia yang benar.")
+                print("Maaf, Anda masih dibawah umur. Silahkan masukkan usia yang benar.")
                 r[7] = 0 # Reset usia untuk tetap berada di loop
         except ValueError:
             print("Input tidak valid. Mohon masukkan angka untuk usia.")
@@ -106,7 +105,7 @@ while yakin == 0:
     r[0] = "" # Reset input gender sebelum loop
     while r[0] != "Pria" and r[0] != "Wanita":
         try:
-            gender_input = int(input("1. Pria\n2. Wanita \nJenis kelamin kamu : "))
+            gender_input = int(input("Apa jenis kelamin Anda?\n1. Pria\n2. Wanita\nJawaban (1/2): "))
             if gender_input == 1:
                 r[0] = "Pria"
             elif gender_input == 2:
@@ -120,7 +119,7 @@ while yakin == 0:
     dt_filtered_gender = [person for person in dt if person[1] != r[0]]
 
 
-    print("===================================================================================")
+    print("======================================================================\n                Masukkan Preferensi Pasangan Anda\n======================================================================")
     r[1] = 0 # Reset batas bawah usia
     r[2] = 0 # Reset batas atas usia
     while r[1] == 0 or r[2] == 0 or r[2] < r[1] or r[1] < 18:
@@ -132,18 +131,18 @@ while yakin == 0:
                 r[1] = 0
                 r[2] = 0
             if r[1] < 18:
-                print("Tidak boleh mencari yang di bawah 18 tahun")
+                print("Batas usia bawah adalah 18 tahun!")
                 r[1] = 0
                 r[2] = 0
         except ValueError:
             print("Input tidak valid. Mohon masukkan angka untuk batas usia.")
             r[1] = 0
             r[2] = 0
-    print("===================================================================================")
+    print("======================================================================")
 
     r_inp = 0
     while r_inp == 0: # Loop hingga data sesuai
-        r_m = str(input("Ras yang dicari? (Pisahkan dengan koma jika lebih dari 1): "))
+        r_m = str(input("Ras dari pasangan yang ingin Anda cari?\n- Tionghoa      - Jawa\n- Batak         - Manado\n- Minang        - Minahasa\n- Flores        - Sunda\n- Ambon\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)\nJawaban    : "))
         r[3] = [x.strip().capitalize() for x in r_m.split(",")]
         pl = ""
         llm = list(set(r[3]) - set(ras))
@@ -151,7 +150,7 @@ while yakin == 0:
             pl = ", ".join(llm) # Menggabungkan list ras yang hilang
             r_inp_valid_confirm = False # Menambahkan validasi pengulangan untuk konfirmasi ras
             while r_inp_valid_confirm == False:
-                r_inp_confirm = input(f"{pl} tidak ada, apakah anda masih mau lanjut? Y/N: ")
+                r_inp_confirm = input(f"{pl} tidak ada, apakah Anda tetap ingin melanjutkan pencarian ke tahap selanjutnya? (Y/N): ")
                 if r_inp_confirm.upper() == "Y":
                     r_inp = 1
                     r_inp_valid_confirm = True
@@ -169,7 +168,7 @@ while yakin == 0:
     print("===================================================================================")
     agama_inp = 0
     while agama_inp == 0: # Loop sampai input agama valid
-        a_m = str(input(f"Agama yang dicari? ({', '.join(agama_list)}) (Pisahkan dengan koma jika lebih dari 1): "))
+        a_m = str(input(f"Agama dari pasangan yang Anda cari?\n- Katolik     - Kristen\n- Islam       - Konghucu\n- Buddha\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)\nJawaban    : "))
         r[10] = [x.strip().capitalize() for x in a_m.split(",")]
         pl_agama = ""
         llm_agama = list(set(r[10]) - set(agama_list))
@@ -177,7 +176,7 @@ while yakin == 0:
             pl_agama = ", ".join(llm_agama) # Menggabungkan list agama yang hilang
             agama_inp_confirm = False # Menambahkan loop validasi untuk konfirmasi agama
             while agama_inp_confirm == False:
-                agama_confirm_input = input(f"{pl_agama} tidak ada dalam daftar agama yang tersedia, apakah anda masih mau lanjut? Y/N: ")
+                agama_confirm_input = input(f"{pl_agama} Tidak ada di dalam daftar agama yang tersedia, apakah Anda tetap ingin melakukan\npencarian ke tahap selanjutnya? (Y/N): ")
                 if agama_confirm_input.upper() == "Y":
                     agama_inp = 1
                     agama_inp_confirm = True
@@ -196,7 +195,7 @@ while yakin == 0:
     print("===================================================================================")
     mbti_inp = 0 # Menambahkan loop validasi unutk input MBTI
     while mbti_inp == 0:
-        p_m = str(input(f"MBTI yang dicari? ({', '.join(mbti_list)}) (Pisahkan dengan koma jika lebih dari 1)"))
+        p_m = str(input(f"MBTI dari pasangan yang Anda cari?\n- ENTJ      - INFP      - ESFJ\n- ENTP      - ISTP      - ISTJ\n- ISFP      - ENFJ      - ESTP\n- ENFP      - INFJ      - ESFP\n- ESTJ      - INTP      - INTJ\n- ISFJ\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)"))
         r[4] = [x.strip().upper() for x in p_m.split(",")]
         invalid_mbti = [mbti for mbti in r[4] if mbti not in mbti_list]
         if not r[4] or invalid_mbti: # Cek jika list kosoong atau berisi MBTI yang tidak valid
@@ -212,7 +211,7 @@ while yakin == 0:
     valid_universitas = ["ITB", "UNPAR", "UNPAD"]
     r[5] = 0 # Reset input universitas
     while r[5] == 0 or not all(uni in valid_universitas for uni in r[5]):
-        u_m = str(input("ITB/UNPAR/UNPAD\nMau dari Universitas mana? (Pisahkan dengan koma jika lebih dari 1)"))
+        u_m = str(input("Universitas dari pasangan yang Anda cari?\n- Institut Teknologi Bandung (ITB)\n- Universitas Parahyangan (UNPAR)\n- Universitas Padjajaran (UNPAD)\n(Silakan masukkan jawaban dalam bentuk singkatan universitas yang sudah diberikan)\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)\nJawaban   : "))
         r[5] = [x.strip().upper() for x in u_m.split(",")]
         invalid_universities = [uni for uni in r[5] if uni not in valid_universitas]
         if not r[5] or invalid_universities: # Cek apakah list kosong atau ada data universitas yang invalid
@@ -227,18 +226,18 @@ while yakin == 0:
     valid_fakultas_pref = ["Teknik", "Sosial", "Seni", "Sastra", "Bisnis", "Kesehatan", "Hukum", "Farmasi", "Sains"] 
     r[8] = 0 # Reset input preferensi fakultas
     while r[8] == 0 or not all(fak in valid_fakultas_pref for fak in r[8]):
-        f_m = input("Teknik\nSosial\nSeni\nSastra\nBisnis\nKesehatan\nHukum\nFarmasi\nSains\nPreferensi Fakultas kamu? (Pisahkan dengan koma jika lebih dari 1)")
+        f_m = input("Fakultas dari pasangan yang Anda cari?\n- Teknik       - Sosial\n- Seni          - Sastra\n- Bisnis       - Kesehatan\n- Hukum        - Farmasi\n- Sains\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)\nJawaban    : ")
         r[8] = [x.strip().capitalize() for x in f_m.split(",")]
         if not r[8] or not all(fak in valid_fakultas_pref for fak in r[8]): # Cek apakah list kosong atau ada invalid preferensi fakultas
             print("Input tidak valid. Mohon masukkan salah satu dari daftar fakultas.")
             r[8] = 0 # Reset r[8] supaya tetap berada di loop
 
 
-    print("===================================================================================")
-    print(f"Yang anda cari\n Range usia: {r[1]} - {r[2]}\n Ras: {r_m}\n Agama: {a_m}\n MBTI: {p_m}\n Kampus: {u_m}\n Fakultas: {f_m}")
+    print("\n>>>>>>>>>>>>>>>>>>>> Rangkuman Data Preferensi calon pasangan Anda <<<<<<<<<<<<<<<<<<<<\n")
+    print(f"Kriteria calon pasangan yang Anda cari\n  - Range usia    : {r[1]} - {r[2]} tahun\n  - Ras           : {r_m}\n  - Agama         : {a_m}\n  - MBTI           : {p_m}\n  - Kampus       : {u_m}\n  - Fakultas     : {f_m}")
     yakin_valid_input = False
     while yakin_valid_input == False:
-        yakin_input = input("Apakah anda sudah yakin? Y/N: ")
+        yakin_input = input("Apakah Anda sudah yakin dengan data tersebut? (Y/N): ")
         if yakin_input.upper() == "Y":
             yakin = 1
             yakin_valid_input = True
@@ -247,47 +246,48 @@ while yakin == 0:
             r = [0 for p in range (11)] # Reset r untuk memasukkan kembali preferensi
             yakin_valid_input = True
         else:
-            print("Input tidak valid. Mohon masukkan Y atau N.")
+            print("Input tidak valid. Mohon masukkan Y atau N sebagai jawaban Anda.")
             # Loop tetap berlanjut karena yakin_valid_input tetap False
 
 
 mul = [-1 for t in range(6)] #array untuk multiplier faktor
 while round(sum(mul),0) != 1:
-    print("Masukkan seberapa penting faktor-faktor ini bagi Anda! (0 sangat tidak penting, 100 sangat penting) ")
-    mul_input = [-1 for t in range(6)]
+    print("========================================================================\n             PENENTUAN SKALA KATEGORI PASANGAN\n========================================================================")
+    print("Masukkan seberapa penting faktor-faktor di bawah ini bagi Anda\nutuk memastikan sistem memberikan pilihan yang terbaik!\n(0 sangat tidak penting, 100 sangat penting) ")
     try:
-        while 0 > mul_input[0] or mul_input[0] > 1:
-            mul_input[0] = int(input("Masukkan faktor pengali usia (per 100): "))/100
+        mul_input = [0] * 6 # Inisialisasi dengan 0
+        while True:
+            mul_input[0] = int(input("\nMasukkan faktor pengali usia (per 100)      : "))/100
             if 0 <= mul_input[0] <= 1:
                 break
             else:
                 print("Input tidak valid. Mohon masukkan angka antara 0 dan 100.")
-        while 0 > mul_input[1] or mul_input[1] > 1:
-            mul_input[1] = int(input("Masukkan faktor pengali ras (per 100): "))/100
+        while True:
+            mul_input[1] = int(input("Masukkan faktor pengali ras (per 100)       : "))/100
             if 0 <= mul_input[1] <= 1:
-                break
+                 break
             else:
                 print("Input tidak valid. Mohon masukkan angka antara 0 dan 100.")
-        while 0 > mul_input[5] or mul_input[5] > 1:
-            mul_input[5] = int(input("Masukkan faktor pengali Agama (per 100): "))/100 
+        while True:
+            mul_input[5] = int(input("Masukkan faktor pengali Agama (per 100)     : "))/100 
             if 0 <= mul_input[5] <= 1:
-                break
+                 break
             else:
                 print("Input tidak valid. Mohon masukkan angka antara 0 dan 100.")
-        while 0 > mul_input[2] or mul_input[2] > 1:
-            mul_input[2] = int(input("Masukkan faktor pengali kampus (per 100): "))/100
+        while True:
+            mul_input[2] = int(input("Masukkan faktor pengali kampus (per 100)    : "))/100
             if 0 <= mul_input[2] <= 1:
                 break
             else:
                 print("Input tidak valid. Mohon masukkan angka antara 0 dan 100.")
-        while 0 > mul_input[3] or mul_input[3] > 1:
-            mul_input[3] = int(input("Masukkan faktor pengali MBTI (per 100): "))/100
+        while True:
+            mul_input[3] = int(input("Masukkan faktor pengali MBTI (per 100)      : "))/100
             if 0 <= mul_input[3] <= 1:
                  break
             else:
                 print("Input tidak valid. Mohon masukkan angka antara 0 dan 100.")
-        while 0 > mul_input[4] or mul_input[4] > 1:
-            mul_input[4] = int(input("Masukkan faktor pengali Fakultas (per 100): "))/100
+        while True:
+            mul_input[4] = int(input("Masukkan faktor pengali Fakultas (per 100)  : "))/100
             if 0 <= mul_input[4] <= 1:
                 break
             else:
@@ -353,7 +353,7 @@ while jodh == 0:
         print("Yah gak ada yang cocok 😞, semangat ya")
         break # Keluar dari loop utama
 
-    print("Selamat! Kamu paling cocok dengan:",jodoh+"!\nIni profilnya!\n===================================================================================\nNama:", profil[0],"\nGender:", profil[1],"\nUsia:",profil[2],"\nRas:",profil[3],"\nAgama:",profil[9],"\nMBTI:",profil[4],"\nKampus:",profil[5],"\nFakultas:",profil[6],"\nProfil:",profil[7],"\n===================================================================================") # Added Agama to output and reordered
+    print("\nSelamat! Kamu paling cocok dengan:",jodoh+"!\nIni profilnya!\n===================================================================================\nNama          :", profil[0],"\nGender        :", profil[1],"\nUsia          :",profil[2]," tahun","\nRas           :",profil[3],"\nAgama         :",profil[9],"\nMBTI          :",profil[4],"\nKampus        :",profil[5],"\nFakultas      :",profil[6],"\nProfil        :",profil[7],"\n===================================================================================") # Added Agama to output and reordered
 
     confirm = str(input("Apakah anda terima? Y/N: "))
 
@@ -367,13 +367,13 @@ while jodh == 0:
                 jodh = 0 # Lanjutkan mencari
             elif an.upper() == "Y":
                 print("Oke, semangat!")
-                print(f"Selamat berbahagia!, {r[6]} dan {jodoh}. Kontak LINE-nya di {profil[8]}.")
+                print(f"Selamat berbahagia!, {r[6]} dan {jodoh}. Kontak LINE-nya di {profil[8]}.\nSilakan mulai percakapan bareng si Dia!")
                 jodh = 1 # Keluar dari loop
             else:
                 print("Input tidak valid. Mohon masukkan Y atau N.")
                 # Tetap di loop dan minta konfirmasi lagi
         else:
-            print(f"Selamat berbahagia!, {r[6]} dan {jodoh}. Kontak LINE-nya di {profil[8]}.")
+            print(f"Selamat berbahagia!, {r[6]} dan {jodoh}. Kontak LINE-nya di {profil[8]}.\nSilakan mulai percakapan bareng si Dia!")
             jodh = 1 # Keluar dari loop
     elif confirm.upper() == "N":
         # Hapus profil yang ditolak dari available_profiles
