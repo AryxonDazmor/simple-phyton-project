@@ -359,23 +359,8 @@ while jodh == 0:
     confirm = str(input("Apakah anda terima? Y/N: "))
 
     if confirm.upper() == "Y":
-        if ((profil[6] == "Bisnis" and r[9] == "Teknik") or (profil[6] == "Teknik" and r[9] == "Bisnis")):
-            print("Wah, yakin nih?")
-            an = input("(Y/N): ")
-            if an.upper() == "N":
-                # Hapus profil yang ditolak dari available_profiles
-                available_profiles.remove(profil)
-                jodh = 0 # Lanjutkan mencari
-            elif an.upper() == "Y":
-                print("Oke, semangat!")
-                print(f"Selamat berbahagia!, {r[6]} dan {jodoh}. Kontak LINE-nya di {profil[8]}.\nSilakan mulai percakapan bareng si Dia!")
-                jodh = 1 # Keluar dari loop
-            else:
-                print("Input tidak valid. Mohon masukkan Y atau N.")
-                # Tetap di loop dan minta konfirmasi lagi
-        else:
-            print(f"Selamat berbahagia!, {r[6]} dan {jodoh}. Kontak LINE-nya di {profil[8]}.\nSilakan mulai percakapan bareng si Dia!")
-            jodh = 1 # Keluar dari loop
+        print(f"Selamat berbahagia!, {r[6]} dan {jodoh}. Kontak LINE-nya di {profil[8]}.\nSilakan mulai percakapan bareng si Dia!")
+        jodh = 1 # Keluar dari loop
     elif confirm.upper() == "N":
         # Hapus profil yang ditolak dari available_profiles
         available_profiles.remove(profil)
