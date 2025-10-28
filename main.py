@@ -254,11 +254,11 @@ while yakin == 0:
 mul = [-1 for t in range(6)] #array untuk multiplier faktor
 while round(sum(mul),0) != 1:
     print("========================================================================\n             PENENTUAN SKALA KATEGORI PASANGAN\n========================================================================")
-    print("Masukkan seberapa penting faktor-faktor di bawah ini bagi Anda\nutuk memastikan sistem memberikan pilihan yang terbaik!\n(0 sangat tidak penting, 100 sangat penting) ")
+    print("Masukkan seberapa penting faktor-faktor di bawah ini bagi Anda\nutuk memastikan sistem memberikan pilihan yang terbaik!\n(0 sangat tidak penting, 100 sangat penting)\n ")
     try:
         mul_input = [0] * 6 # Inisialisasi dengan 0
         while True:
-            mul_input[0] = int(input("\nMasukkan faktor pengali usia (per 100)      : "))/100
+            mul_input[0] = int(input("Masukkan faktor pengali usia (per 100)      : "))/100
             if 0 <= mul_input[0] <= 1:
                 break
             else:
