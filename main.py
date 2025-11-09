@@ -1,5 +1,6 @@
 import time
 import random
+import pandas
 dt = [
     ["Kevin Tanuwijaya", "Pria", 22, "Tionghoa", "ENTP", "ITB", "Teknik", "Suka batagor, ayo keliling Bandung buat nyari batagor","TanuKevin8877","Katolik"],
     ["Cindy Halim", "Wanita", 20, "Tionghoa", "INFJ", "UNPAR", "Kesehatan", "Stressed out 3rd year medstud. Looking for fun","Cindy0909","Kristen"],
