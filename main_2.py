@@ -1,7 +1,11 @@
 import pandas as pd
-
+import sys
 url = "https://github.com/AryxonDazmor/simple-phyton-project/raw/main/data_mahasiswa_dummy.xlsx"
 dt = pd.read_excel(url, engine='openpyxl')
+agama = dt['Agama'].unique()
+jurusan = dt['Jurusan'].unique()
+univ = dt['Universitas'].unique()
+etnis = dt['Etnis'].unique()
 
 pu = pd.read_excel(url, sheet_name = 1, engine='openpyxl')
 print(pu)
@@ -52,8 +56,8 @@ while logged_in == False:
     pu.loc[pu["Username"] == a[0], 'pass korek'] += 1
     pu.loc[pu["Password"] == a[1], 'pass korek'] += 1
     anchovy = pu.sort_values(["pass korek"],ascending=False)
-    print(anchovy)
     anchovy = anchovy.reset_index(drop=True)
+    print(anchovy)
     corpas = anchovy.loc[0, 'pass korek'] == 2
     print(corpas)
     if corpas == True:
@@ -64,29 +68,62 @@ while logged_in == False:
     if logged_in == False:
         print("Username atau Password salah")
 dt['kecocokan'] = 0
-# dt.loc[dt["Jurusan"] == 'Teknik', 'kecocokan'] += 1
 
-gaysex = dt.sort_values(["kecocokan"],ascending=False)
-print(gaysex[["Nama","Username","kecocokan"]])
+# Data diri
+User = input("Nama Lengkap: ")
+gender = 0
+while gender != "Laki-Laki" or gender != "Perempuan":
+    gender = input("Jenis Kelamin (L/P): ")
+    if gender == "L" or gender == "l":
+        gender = "Laki-Laki"
+        dt = dt[dt["Jenis Kelamin"] == "Wanita"]
+        break
+    elif gender == "P" or gender == "p":
+        gender = "Perempuan"
+        dt = dt[dt["Jenis Kelamin"] == "Pria"]
+        break
+age = "I am Jokowi"
+while True:
+    try:
+        age = int(input("Masukkan usia anda: "))
+        break
+    except ValueError:
+        print("Mohon masukkan angka bulat untuk usia.")
+if age <= 17:
+    print("Maaf, anda belum cukup umur")
+    sys.exit()
 
-agama = dt['Agama'].unique()
-jurusan = dt['Jurusan'].unique()
-univ = dt['Universitas'].unique()
-etnis = dt['Etnis'].unique()
+#Mulai input preferensi..
+print("======================================================================\n                Masukkan Preferensi Pasangan Anda\n======================================================================")
+low_age = int(input("Batas bawah usia yang dicari: "))
+hi_age = int(input("Batas atas usia yang dicari: "))
 
+if low_age > hi_age:
+    low_age, hi_age = hi_age, low_age
+if low_age <= 17:
+    print("Anda tidak dapat mencari pasangan di bawah umur")
+    low_age = 18
+dt['age_cocok'] = 0
+dt.loc[(dt["Usia"] >= low_age) & (dt["Usia"] <= hi_age), 'age_cocok'] += 1
+print("======================================================================")
+print("Ras yang tersedia:")
+for i in range (0,len(etnis),2):
+    print(f"{etnis[i]}   \t|  {etnis[i+1]}")
+    i = i+2
+
+pravda = dt.sort_values(["kecocokan"],ascending=False)
 
 i = 0
-w = 0
 print("Jurusan")
 for i in range (0,len(jurusan),2):
-    print(f"{jurusan[i]} \t|  {jurusan[i+1]}")
+    print(f"{jurusan[i]}   \t|  {jurusan[i+1]}")
     i = i+2
 con = 0
 while con != 'Y' and con != 'y':
-    a = gaysex.head(1)
+    a = pravda.head(1)
     con = input(f"Selamat kamu paling cocok dengan {a['Nama'].values[0]} dengan username {a['Username'].values[0]}\nApakah kamu mau menerimanya?\nY/N ")
 
     if con == 'Y' or con == 'y':
         print("Selamat kalian diterima bersama!")
     elif con == 'N' or con == 'n':
-        gaysex = gaysex.drop(gaysex.index[0])
+        pravda = pravda.drop(pravda.index[0])
