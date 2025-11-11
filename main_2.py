@@ -105,19 +105,97 @@ if low_age <= 17:
     low_age = 18
 dt['age_cocok'] = 0
 dt.loc[(dt["Usia"] >= low_age) & (dt["Usia"] <= hi_age), 'age_cocok'] += 1
+
 print("======================================================================")
 print("Ras yang tersedia:")
 for i in range (0,len(etnis),2):
     print(f"{etnis[i]}   \t|  {etnis[i+1]}")
     i = i+2
+etnpil = str(input("Masukkan etnis yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
+etnpil = [x.strip().capitalize() for x in etnpil.split(",")]
+dt['etn_cocok'] = 0
+for x in range (0,len(etnpil)):
+    dt.loc[dt["Etnis"] == etnpil[x], 'etn_cocok'] += 1
+print(etnpil)
 
-pravda = dt.sort_values(["kecocokan"],ascending=False)
-
+print("===================================================================================")
 i = 0
-print("Jurusan")
+print("Jurusan yang tersedia:")
+
 for i in range (0,len(jurusan),2):
     print(f"{jurusan[i]}   \t|  {jurusan[i+1]}")
     i = i+2
+jurpil = str(input("Masukkan jurusan yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
+jurpil = [x.strip().capitalize() for x in jurpil.split(",")]
+dt['jur_cocok'] = 0
+for x in range (0,len(jurpil)):
+    dt.loc[dt["Jurusan"] == jurpil[x], 'jur_cocok'] += 1
+print(jurpil)
+
+print("===================================================================================")
+for i in range (0,len(univ),2):
+    w = len(univ)
+    print(w)
+    while w != 1:
+        print(f"{univ[i]}   \t|  {univ[i+1]}")
+        i = i+2
+        w = w-2
+    else: 
+        print(f"{univ[i]}")
+        break
+upil = str(input("Masukkan Universitas yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
+upil = [x.strip().upper() for x in upil.split(",")]
+dt['u_cocok'] = 0
+for x in range (0,len(upil)):
+    dt.loc[dt["Universitas"] == upil[x], 'u_cocok'] += 1
+print(upil)
+print("===================================================================================")
+mpil = str(input(f"MBTI dari pasangan yang Anda cari?\n- ENTJ      - INFP      - ESFJ\n- ENTP      - ISTP      - ISTJ\n- ISFP      - ENFJ      - ESTP\n- ENFP      - INFJ      - ESFP\n- ESTJ      - INTP      - INTJ\n- ISFJ\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)"))
+mpil = [x.strip().upper() for x in mpil.split(",")]
+dt['mbti_cocok'] = 0
+for x in range (0,len(mpil)):
+    dt.loc[dt["MBTI"] == mpil[x], 'mbti_cocok'] += 1
+#Ngolah kecocokan
+a = 96
+while a < 0 or a > 1:
+    a = int(input("Masukkan faktor pengali usia (per 100)      : "))/100
+    print(a)
+    if a > 0 and a < 1:
+        dt['kecocokan'] += dt['age_cocok'] * a
+        break
+b = 96
+while b <= 0 or b >= 1:
+    b = int(input("Masukkan faktor pengali jurusan (per 100)   : "))/100
+    print(b)
+    if b >= 0 and b <= 1:
+        dt['kecocokan'] += dt["jur_cocok"] * b        
+        break
+a = 96
+while a < 0 or a > 1:
+    a = int(input("Masukkan faktor pengali etnis (per 100)   : "))/100
+    print(a)
+    if a >= 0 and a <= 1:
+        dt['kecocokan'] += dt["etn_cocok"] * a
+a = 96        
+while a < 0 or a > 1:
+    a = int(input("Masukkan faktor pengali universitas (per 100)   : "))/100
+    print(a)
+    if a >= 0 and a <= 1:
+        dt['kecocokan'] += dt["u_cocok"] * a
+a = 96        
+while a < 0 or a > 1:
+    a = int(input("Masukkan faktor pengali MBTI (per 100)   : "))/100
+    print(a)
+    if a >= 0 and a <= 1:
+        dt['kecocokan'] += dt["mbti_cocok"] * a
+
+
+pravda = dt.sort_values(["kecocokan"],ascending=False)
+pravda = pravda.reset_index(drop=True)
+print(pravda)
+
+
+#Hasil
 con = 0
 while con != 'Y' and con != 'y':
     a = pravda.head(1)
