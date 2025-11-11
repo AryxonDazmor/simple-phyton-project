@@ -6,9 +6,9 @@ agama = dt['Agama'].unique()
 jurusan = dt['Jurusan'].unique()
 univ = dt['Universitas'].unique()
 etnis = dt['Etnis'].unique()
+mbtis = dt['MBTI'].unique()
 
 pu = pd.read_excel(url, sheet_name = 1, engine='openpyxl')
-print(pu)
 a = [0,0]
 logged_in = False
 while logged_in == False:
@@ -36,7 +36,6 @@ while logged_in == False:
                 }
                 new_data = pd.DataFrame([new_acc])
                 pu = pd.concat([pu, new_data], ignore_index=True)
-                print(pu)
             else:
                 print("")
                 print("===========================")
@@ -57,18 +56,20 @@ while logged_in == False:
     pu.loc[pu["Password"] == a[1], 'pass korek'] += 1
     anchovy = pu.sort_values(["pass korek"],ascending=False)
     anchovy = anchovy.reset_index(drop=True)
-    print(anchovy)
     corpas = anchovy.loc[0, 'pass korek'] == 2
-    print(corpas)
     if corpas == True:
         logged_in = True
+        print("============================================")
+        print("Selamat! Anda berhasil log in!")
+        print("============================================")
         break
     else:
         logged_in = False
     if logged_in == False:
         print("Username atau Password salah")
 dt['kecocokan'] = 0
-
+        print("============================================")
+        print("Silahkan isi data diri")
 # Data diri
 User = input("Nama Lengkap: ")
 gender = 0
@@ -82,6 +83,8 @@ while gender != "Laki-Laki" or gender != "Perempuan":
         gender = "Perempuan"
         dt = dt[dt["Jenis Kelamin"] == "Pria"]
         break
+    else:
+        print("Mohon masukkan L untuk Laki-Laki atau P untuk Perempuan.")
 age = "I am Jokowi"
 while True:
     try:
@@ -95,13 +98,17 @@ if age <= 17:
 
 #Mulai input preferensi..
 print("======================================================================\n                Masukkan Preferensi Pasangan Anda\n======================================================================")
-low_age = int(input("Batas bawah usia yang dicari: "))
-hi_age = int(input("Batas atas usia yang dicari: "))
-
+while True:
+    try:
+        low_age = int(input("Batas bawah usia yang dicari: "))
+        hi_age = int(input("Batas atas usia yang dicari: "))
+        break
+    except ValueError:
+        print("Mohon masukkan angka bulat untuk usia.")
 if low_age > hi_age:
     low_age, hi_age = hi_age, low_age
 if low_age <= 17:
-    print("Anda tidak dapat mencari pasangan di bawah umur")
+    print("Anda tidak dapat mencari pasangan di bawah umur, batas bawah usia dijadikan 18 tahun")
     low_age = 18
 dt['age_cocok'] = 0
 dt.loc[(dt["Usia"] >= low_age) & (dt["Usia"] <= hi_age), 'age_cocok'] += 1
@@ -111,6 +118,22 @@ print("Ras yang tersedia:")
 for i in range (0,len(etnis),2):
     print(f"{etnis[i]}   \t|  {etnis[i+1]}")
     i = i+2
+etnpil = "Test"
+while etnpil == "Test":
+    etnpil = str(input("Masukkan Jurusan yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
+    etnpil = [x.strip().capitalize() for x in etnpil.split(",")]
+    invalid_etnpil = [g for g in etnpil if g not in etnis]
+    if not etnpil or invalid_etnpil:
+        if invalid_etnpil:     
+            print(f"Input tidak valid. Ras berikut tidak ada dalam daftar: {', '.join(invalid_etnpil)}. Mohon masukkan salah satu dari daftar ras yang tersedia. Apakah anda mau tetap lanjut saja?")
+            conpil = input("Y/N: ")
+            if conpil == 'Y' or conpil == 'y':
+                break
+            if conpil == 'N' or conpil == 'n':
+                etnpil = "Test"
+        else:
+            print("Input tidak valid. Mohon masukkan setidaknya satu Ras.")
+        etnpil = "Test" # Reset supaya tetap di loop jika kosong
 etnpil = str(input("Masukkan etnis yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
 etnpil = [x.strip().capitalize() for x in etnpil.split(",")]
 dt['etn_cocok'] = 0
@@ -123,10 +146,25 @@ i = 0
 print("Jurusan yang tersedia:")
 
 for i in range (0,len(jurusan),2):
-    print(f"{jurusan[i]}   \t|  {jurusan[i+1]}")
+    print(f"- {jurusan[i]}   \t- {jurusan[i+1]}")
     i = i+2
-jurpil = str(input("Masukkan jurusan yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
-jurpil = [x.strip().capitalize() for x in jurpil.split(",")]
+jurpil = "Test"
+while jurpil == "Test":
+    jurpil = str(input("Masukkan Jurusan yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
+    jurpil = [x.strip().capitalize() for x in jurpil.split(",")]
+    invalid_jurpil = [juru for juru in jurpil if juru not in jurusan]
+    if not jurpil or invalid_jurpil:
+        if invalid_jurpil:     
+            print(f"Input tidak valid. Jurusan berikut tidak ada dalam daftar: {', '.join(invalid_jurpil)}. Mohon masukkan salah satu dari daftar jurusan yang tersedia. Apakah anda mau tetap lanjut saja?")
+            conpil = input("Y/N: ")
+            if conpil == 'Y' or conpil == 'y':
+                break
+            if conpil == 'N' or conpil == 'n':
+                jurpil = "Test"
+        else:
+            print("Input tidak valid. Mohon masukkan setidaknya satu Jurusan.")
+        upil = "Test" # Reset supaya tetap di loop jika kosong
+
 dt['jur_cocok'] = 0
 for x in range (0,len(jurpil)):
     dt.loc[dt["Jurusan"] == jurpil[x], 'jur_cocok'] += 1
@@ -137,58 +175,103 @@ for i in range (0,len(univ),2):
     w = len(univ)
     print(w)
     while w != 1:
-        print(f"{univ[i]}   \t|  {univ[i+1]}")
+        print(f"- {univ[i]}   \t|- {univ[i+1]}")
         i = i+2
         w = w-2
     else: 
         print(f"{univ[i]}")
         break
-upil = str(input("Masukkan Universitas yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
-upil = [x.strip().upper() for x in upil.split(",")]
+upil = "gay"
+while upil == "gay":
+    upil = str(input("Masukkan Universitas yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
+    upil = [x.strip().upper() for x in upil.split(",")]
+    invalid_univ = [univ for univ in upil if univ not in univ]
+    if not upil or invalid_univ:
+        if invalid_univ:     
+            print(f"Input tidak valid. Universitas berikut tidak ada dalam daftar: {', '.join(invalid_univ)}. Mohon masukkan salah satu dari daftar universitas yang tersedia. Apakah anda mau tetap lanjut saja?")
+            conpil = input("Y/N: ")
+            if conpil == 'Y' or conpil == 'y':
+                break
+            if conpil == 'N' or conpil == 'n':
+                upil = "gay"
+        else:
+            print("Input tidak valid. Mohon masukkan setidaknya satu Universitas.")
+        upil = "gay" # Reset supaya tetap di loop jika kosong
 dt['u_cocok'] = 0
 for x in range (0,len(upil)):
     dt.loc[dt["Universitas"] == upil[x], 'u_cocok'] += 1
 print(upil)
 print("===================================================================================")
-mpil = str(input(f"MBTI dari pasangan yang Anda cari?\n- ENTJ      - INFP      - ESFJ\n- ENTP      - ISTP      - ISTJ\n- ISFP      - ENFJ      - ESTP\n- ENFP      - INFJ      - ESFP\n- ESTJ      - INTP      - INTJ\n- ISFJ\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)"))
-mpil = [x.strip().upper() for x in mpil.split(",")]
+mpil = "gay"
+while mpil == "gay":
+    mpil = str(input(f"MBTI dari pasangan yang Anda cari?\n- ENTJ      - INFP      - ESFJ\n- ENTP      - ISTP      - ISTJ\n- ISFP      - ENFJ      - ESTP\n- ENFP      - INFJ      - ESFP\n- ESTJ      - INTP      - INTJ\n- ISFJ\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)"))
+    mpil = [x.strip().upper() for x in mpil.split(",")]
+    invalid_mbti = [mbti for mbti in mpil if mbti not in mbtis]
+    if not mpil or invalid_mbti: # Cek jika list kosoong atau berisi MBTI yang tidak valid
+        if invalid_mbti:     
+            print(f"Input tidak valid. MBTI berikut tidak ada dalam daftar: {', '.join(invalid_mbti)}. Mohon masukkan salah satu dari daftar MBTI yang tersedia. Apakah anda mau tetap lanjut saja?")
+            conpil = input("Y/N: ")
+            if conpil == 'Y' or conpil == 'y':
+                break
+            if conpil == 'N' or conpil == 'n':
+                mpil = "gay" # Reset supaya tetap di loop jika ada MBTI tidak valid
+        else:
+            print("Input tidak valid. Mohon masukkan setidaknya satu MBTI.")
+        mpil = "gay" # Reset supaya tetap di loop jika kosong
 dt['mbti_cocok'] = 0
 for x in range (0,len(mpil)):
     dt.loc[dt["MBTI"] == mpil[x], 'mbti_cocok'] += 1
 #Ngolah kecocokan
 a = 96
 while a < 0 or a > 1:
-    a = int(input("Masukkan faktor pengali usia (per 100)      : "))/100
-    print(a)
-    if a > 0 and a < 1:
-        dt['kecocokan'] += dt['age_cocok'] * a
-        break
+    try: 
+        a = int(input("Masukkan faktor pengali usia (per 100)      : "))/100
+        print(a)
+        if a > 0 and a < 1:
+            dt['kecocokan'] += dt['age_cocok'] * a
+            break
+    except ValueError:
+        print("Mohon masukkan angka bulat antara 0-100")
 b = 96
 while b <= 0 or b >= 1:
-    b = int(input("Masukkan faktor pengali jurusan (per 100)   : "))/100
-    print(b)
-    if b >= 0 and b <= 1:
-        dt['kecocokan'] += dt["jur_cocok"] * b        
-        break
+    try:
+        b = int(input("Masukkan faktor pengali jurusan (per 100)   : "))/100
+        print(b)
+        if b >= 0 and b <= 1:
+            dt['kecocokan'] += dt["jur_cocok"] * b        
+            break
+    except ValueError:
+        print("Mohon masukkan angka bulat antara 0-100")
 a = 96
 while a < 0 or a > 1:
-    a = int(input("Masukkan faktor pengali etnis (per 100)   : "))/100
-    print(a)
-    if a >= 0 and a <= 1:
-        dt['kecocokan'] += dt["etn_cocok"] * a
+    try:
+        a = int(input("Masukkan faktor pengali etnis (per 100)   : "))/100
+        print(a)
+        if a >= 0 and a <= 1:
+            dt['kecocokan'] += dt["etn_cocok"] * a
+            break
+    except ValueError:
+        print("Mohon masukkan angka bulat antara 0-100")
 a = 96        
 while a < 0 or a > 1:
-    a = int(input("Masukkan faktor pengali universitas (per 100)   : "))/100
-    print(a)
-    if a >= 0 and a <= 1:
-        dt['kecocokan'] += dt["u_cocok"] * a
+    try:
+        a = int(input("Masukkan faktor pengali universitas (per 100)   : "))/100
+        print(a)
+        if a >= 0 and a <= 1:
+            dt['kecocokan'] += dt["u_cocok"] * a
+            break
+    except ValueError:
+        print("Mohon masukkan angka bulat antara 0-100")
 a = 96        
 while a < 0 or a > 1:
-    a = int(input("Masukkan faktor pengali MBTI (per 100)   : "))/100
-    print(a)
-    if a >= 0 and a <= 1:
-        dt['kecocokan'] += dt["mbti_cocok"] * a
-
+    try:
+        a = int(input("Masukkan faktor pengali MBTI (per 100)   : "))/100
+        print(a)
+        if a >= 0 and a <= 1:
+            dt['kecocokan'] += dt["mbti_cocok"] * a
+            break
+    except ValueError:  
+        print("Mohon masukkan angka bulat antara 0-100")
 
 pravda = dt.sort_values(["kecocokan"],ascending=False)
 pravda = pravda.reset_index(drop=True)
@@ -199,9 +282,14 @@ print(pravda)
 con = 0
 while con != 'Y' and con != 'y':
     a = pravda.head(1)
-    con = input(f"Selamat kamu paling cocok dengan {a['Nama'].values[0]} dengan username {a['Username'].values[0]}\nApakah kamu mau menerimanya?\nY/N ")
-
-    if con == 'Y' or con == 'y':
-        print("Selamat kalian diterima bersama!")
-    elif con == 'N' or con == 'n':
-        pravda = pravda.drop(pravda.index[0])
+    con = input(f'Selamat kamu paling cocok dengan {a['Nama'].values[0]}! Berikut adalah profilnya:\n===================================================================================\nJenis Kelamin: {a['Jenis Kelamin'].values[0]} \nUsia: {a['Usia'].values[0]} \nAgama: {a['Agama'].values[0]}\nRas: {a['Etnis'].values[0]} \nMBTI: {a['MBTI'].values[0]}\nUniversitas: {a['Universitas'].values[0]}\nJurusan: {a['Jurusan'].values[0]}\n===================================================================================\nAbout: {a['Deskripsi'].values[0]}\nApakah kamu mau menerimanya?\nY/N ')
+    while len(pravda) >= 1:
+        if con == 'Y' or con == 'y':
+            print("Selamat kalian diterima bersama!")
+            print(f'Kamu bisa kontak {a['Nama'].values[0]} di LINE dengan username {a['Username'].values[0]}')
+            break
+        elif con == 'N' or con == 'n':
+            pravda = pravda.drop(pravda.index[0])
+    if len(pravda) == 0:
+        print("Maaf, tidak ada kandidat lain yang sesuai dengan preferensi Anda.")
+        break
