@@ -68,8 +68,8 @@ while logged_in == False:
     if logged_in == False:
         print("Username atau Password salah")
 dt['kecocokan'] = 0
-        print("============================================")
-        print("Silahkan isi data diri")
+print("============================================")
+print("Silahkan isi data diri")
 # Data diri
 User = input("Nama Lengkap: ")
 gender = 0
@@ -112,15 +112,22 @@ if low_age <= 17:
     low_age = 18
 dt['age_cocok'] = 0
 dt.loc[(dt["Usia"] >= low_age) & (dt["Usia"] <= hi_age), 'age_cocok'] += 1
-
+def display(a):
+    goyim = len(a)
+    while goyim > 1:
+        for i in range (0,goyim,2):
+            while goyim > 1:
+                print(f'- {a[i]}   \t- {a[i+1]}')
+                i = i+2
+                goyim = goyim - 2
+    print("-",a[-1])
+    return None
 print("======================================================================")
 print("Ras yang tersedia:")
-for i in range (0,len(etnis),2):
-    print(f"{etnis[i]}   \t|  {etnis[i+1]}")
-    i = i+2
+display(etnis)
 etnpil = "Test"
 while etnpil == "Test":
-    etnpil = str(input("Masukkan Jurusan yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
+    etnpil = str(input("Masukkan Etnis yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
     etnpil = [x.strip().capitalize() for x in etnpil.split(",")]
     invalid_etnpil = [g for g in etnpil if g not in etnis]
     if not etnpil or invalid_etnpil:
@@ -134,20 +141,15 @@ while etnpil == "Test":
         else:
             print("Input tidak valid. Mohon masukkan setidaknya satu Ras.")
         etnpil = "Test" # Reset supaya tetap di loop jika kosong
-etnpil = str(input("Masukkan etnis yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
-etnpil = [x.strip().capitalize() for x in etnpil.split(",")]
 dt['etn_cocok'] = 0
 for x in range (0,len(etnpil)):
     dt.loc[dt["Etnis"] == etnpil[x], 'etn_cocok'] += 1
-print(etnpil)
 
 print("===================================================================================")
 i = 0
 print("Jurusan yang tersedia:")
 
-for i in range (0,len(jurusan),2):
-    print(f"- {jurusan[i]}   \t- {jurusan[i+1]}")
-    i = i+2
+display(jurusan)
 jurpil = "Test"
 while jurpil == "Test":
     jurpil = str(input("Masukkan Jurusan yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
@@ -171,21 +173,13 @@ for x in range (0,len(jurpil)):
 print(jurpil)
 
 print("===================================================================================")
-for i in range (0,len(univ),2):
-    w = len(univ)
-    print(w)
-    while w != 1:
-        print(f"- {univ[i]}   \t|- {univ[i+1]}")
-        i = i+2
-        w = w-2
-    else: 
-        print(f"{univ[i]}")
-        break
+display(univ)
 upil = "gay"
 while upil == "gay":
     upil = str(input("Masukkan Universitas yang diinginkan (pisahkan dengan koma jika lebih dari satu): "))
     upil = [x.strip().upper() for x in upil.split(",")]
-    invalid_univ = [univ for univ in upil if univ not in univ]
+    invalid_univ = [bakso for bakso in upil if bakso not in univ]
+    print(invalid_univ)
     if not upil or invalid_univ:
         if invalid_univ:     
             print(f"Input tidak valid. Universitas berikut tidak ada dalam daftar: {', '.join(invalid_univ)}. Mohon masukkan salah satu dari daftar universitas yang tersedia. Apakah anda mau tetap lanjut saja?")
@@ -200,14 +194,13 @@ while upil == "gay":
 dt['u_cocok'] = 0
 for x in range (0,len(upil)):
     dt.loc[dt["Universitas"] == upil[x], 'u_cocok'] += 1
-print(upil)
 print("===================================================================================")
 mpil = "gay"
 while mpil == "gay":
     mpil = str(input(f"MBTI dari pasangan yang Anda cari?\n- ENTJ      - INFP      - ESFJ\n- ENTP      - ISTP      - ISTJ\n- ISFP      - ENFJ      - ESTP\n- ENFP      - INFJ      - ESFP\n- ESTJ      - INTP      - INTJ\n- ISFJ\n(Pisahkan dengan koma jika pilihan Anda lebih dari 1)"))
     mpil = [x.strip().upper() for x in mpil.split(",")]
     invalid_mbti = [mbti for mbti in mpil if mbti not in mbtis]
-    if not mpil or invalid_mbti: # Cek jika list kosoong atau berisi MBTI yang tidak valid
+    if not mpil or invalid_mbti: # Cek jika list kosong atau berisi MBTI yang tidak valid
         if invalid_mbti:     
             print(f"Input tidak valid. MBTI berikut tidak ada dalam daftar: {', '.join(invalid_mbti)}. Mohon masukkan salah satu dari daftar MBTI yang tersedia. Apakah anda mau tetap lanjut saja?")
             conpil = input("Y/N: ")
@@ -275,8 +268,6 @@ while a < 0 or a > 1:
 
 pravda = dt.sort_values(["kecocokan"],ascending=False)
 pravda = pravda.reset_index(drop=True)
-print(pravda)
-
 
 #Hasil
 con = 0
