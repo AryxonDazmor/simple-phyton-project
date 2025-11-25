@@ -67,10 +67,15 @@ while logged_in == False:
     if logged_in == False:
         print("Username atau Password salah")
 dt['kecocokan'] = 0
-print("============================================")
 print("Silahkan isi data diri")
+print("============================================")
 # Data diri
-User = input("Nama Lengkap: ")
+while True:
+    try:
+        User = str(input("Nama lengkap anda: "))
+        break
+    except ValueError:
+        print("Mohon masukkan nama!")
 gender = 0
 while gender != "Laki-Laki" or gender != "Perempuan":
     gender = input("Jenis Kelamin (L/P): ")
@@ -112,7 +117,6 @@ if low_age <= 17:
 dt['age_cocok'] = 0
 dt.loc[(dt["Usia"] >= low_age) & (dt["Usia"] <= hi_age), 'age_cocok'] += 1
 def display(a):
-    print(a)
     goyim = len(a)
     while goyim > 1:
         for i in range (0,goyim,2):
@@ -124,14 +128,13 @@ def display(a):
         print("-",a[-1])
     return None
 print("======================================================================")
-print("Ras yang tersedia:")
-display(etnis)
+
 
 def ask(a,b,c): #a = abriveration, b buat displaynya, c ngambil list database
     display(c)
     h = "test"
     while h == "test":
-        h = str(input(f"Masukkan {b} yang diinginkan! (Pisahkan dengan koma jika lebih dari satu): "))
+        h = str(input(f"Masukkan {b} yang dicari! (Pisahkan dengan koma jika lebih dari satu): "))
         h = [x.strip().capitalize() for x in h.split(",")]
         tv = [g for g in h if g not in c] #as in, tidak valid
         if not h or tv:
@@ -197,7 +200,7 @@ pravda = pravda.reset_index(drop=True)
 con = 0
 while con != 'Y' and con != 'y':
     a = pravda.head(1)
-    con = input(f'Selamat kamu paling cocok dengan {a['Nama'].values[0]}! Berikut adalah profilnya:\n===================================================================================\nJenis Kelamin: {a['Jenis Kelamin'].values[0]} \nUsia: {a['Usia'].values[0]} \nAgama: {a['Agama'].values[0]}\nRas: {a['Etnis'].values[0]} \nMBTI: {a['MBTI'].values[0]}\nUniversitas: {a['Universitas'].values[0]}\nJurusan: {a['Jurusan'].values[0]}\n===================================================================================\nAbout: {a['Deskripsi'].values[0]}\nApakah kamu mau menerimanya?\nY/N ')
+    con = input(f'===================================================================================\nSelamat kamu paling cocok dengan {a['Nama'].values[0]}! Berikut adalah profilnya:\n===================================================================================\nJenis Kelamin: {a['Jenis Kelamin'].values[0]} \nUsia: {a['Usia'].values[0]} \nAgama: {a['Agama'].values[0]}\nRas: {a['Etnis'].values[0]} \nMBTI: {a['MBTI'].values[0]}\nUniversitas: {a['Universitas'].values[0]}\nJurusan: {a['Jurusan'].values[0]}\n===================================================================================\nAbout: {a['Deskripsi'].values[0]}\nApakah kamu mau menerimanya?\nY/N ')
     while len(pravda) >= 1:
         if con == 'Y' or con == 'y':
             print("Selamat kalian diterima bersama!")
@@ -205,9 +208,11 @@ while con != 'Y' and con != 'y':
             break
         elif con == 'N' or con == 'n':
             pravda = pravda.drop(pravda.index[0])
+            con = 0
         else:
             print("Mohon masukkan 'Y' atau 'N'!")
             con = 0
+            break
     if len(pravda) == 0:
         print("Maaf, tidak ada kandidat lain yang sesuai dengan preferensi Anda.")
         break
